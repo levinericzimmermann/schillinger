@@ -1,5 +1,5 @@
 import functools
-from itertools import permutations
+import itertools
 import sympy
 
 
@@ -74,7 +74,7 @@ def permute_general(iterable, lv, function):
 
 
 def permute(iterable, lv=1):
-    return permute_general(iterable, lv, permutations)
+    return permute_general(iterable, lv, itertools.permutations)
 
 
 def permute_cyclic(iterable, lv=1):
