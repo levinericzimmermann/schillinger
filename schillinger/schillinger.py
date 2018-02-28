@@ -19,7 +19,7 @@ def superunion(*sets):
     return r
 
 
-def synchronize(*generators):
+def synchronize(*generators, convert_set2ls=True):
     """
     basic synchronisation:
         * the result is symmetric
@@ -27,10 +27,17 @@ def synchronize(*generators):
     """
     cp = functools.reduce(lambda x, y: x * y, generators)  # common_product
     gen = (setrange(generator, cp) for generator in generators)
-    return set2ls(superunion(*gen), cp)
+    union = superunion(*gen)
+    if convert_set2ls is True:
+        return set2ls(union, cp)
+    else:
+        return union
 
 
 def synchronize_complementary(*generators):
+    """
+    the results length is sum(generators) - 2
+    """
     cp = functools.reduce(lambda x, y: x * y, generators)  # common_product
     # complementary factors
     com_fac = (cp // generator for generator in generators)
@@ -52,8 +59,10 @@ def fractionize(*generators):
 
 
 def mk_complementary_factors(*generators):
-    """makes complementary_factors of
-    input generators"""
+    """
+    makes complementary_factors of
+    input generators
+    """
     cp = functools.reduce(lambda x, y: x * y, generators)  # common_product
     return list(cp // generator for generator in generators)
 
@@ -64,7 +73,9 @@ def cyclic(iterable):
 
 
 def permute_general(iterable, lv, function):
-    """general higher level permutation function"""
+    """
+    general higher level permutation function
+    """
     for counter in range(lv):
         iterable = function(iterable)
         if counter > 0:
